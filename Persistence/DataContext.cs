@@ -10,5 +10,9 @@ namespace Persistence
         }
 
         public DbSet<Question> Questions { get; set; }
+        public DbSet<Test> Tests { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<Personality> Personalities { get; set; }
+        public DbSet<TestResult> TestResults { get; set; }
     }
 }
