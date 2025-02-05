@@ -1,5 +1,7 @@
 using API.Extensions;
 using API.Middleware;
+using Domain;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -25,7 +27,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
-
+//always first
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -36,7 +39,9 @@ var services = scope.ServiceProvider;
 try
 {
     var context = services.GetRequiredService<DataContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
     await context.Database.MigrateAsync();
+    await Seed.SeedData(context, userManager);
 }
 
 catch (Exception ex)
