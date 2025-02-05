@@ -8,37 +8,35 @@ namespace API.Controllers
     {
 
         [HttpGet] //api/questions
-        public async Task<ActionResult<List<Question>>> GetQuestions()
+        public async Task<IActionResult> GetQuestions()
         {
-            return await Mediator.Send(new List.Query());
+            return HandleResult(await Mediator.Send(new List.Query()));
         }
 
         [HttpGet("{id}")] //api/guidasdsadsa
-        public async Task<ActionResult<Question>> GetQuestion(Guid id)
+        public async Task<IActionResult> GetQuestion(Guid id)
         {
-            return await Mediator.Send(new Details.Query { Id = id });
+            return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
         }
 
         [HttpPost] //api/guidasdsadsa
         public async Task<IActionResult> CreateQuestion(Question question)
         {
-            await Mediator.Send(new Create.Command { Question = question });
-            return Ok();
+            return HandleResult(await Mediator.Send(new Create.Command { Question = question }));
         }
 
         [HttpPut("{id}")] //api/questions/guidasdsadsa
         public async Task<IActionResult> EditQuestion(Guid id, Question question)
         {
             question.Id = id;
-            await Mediator.Send(new Edit.Command { Question = question });
-            return Ok();
+            
+            return HandleResult(await Mediator.Send(new Edit.Command { Question = question }));
         }
 
         [HttpDelete("{id}")] //api/guidasdsadsa
         public async Task<IActionResult> DeleteQuestion(Guid id)
         {
-            await Mediator.Send(new Delete.Command { Id = id });
-            return Ok();
+            return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
         }
     }
 }
