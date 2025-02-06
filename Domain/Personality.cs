@@ -7,7 +7,6 @@ namespace Domain
         public bool IsTurbulent { get; set; }
         public string Content { get; set; }
         public List<AppUser> Users { get; set; }
-
     }
 }
 
