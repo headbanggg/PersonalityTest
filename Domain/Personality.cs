@@ -6,6 +6,8 @@ namespace Domain
         public MBTIType? MBTIType { get; set; }
         public bool IsTurbulent { get; set; }
         public string Content { get; set; }
+        public List<AppUser> Users { get; set; }
+
     }
 }
 
