@@ -15,5 +15,10 @@ namespace Persistence
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Personality> Personalities { get; set; }
         public DbSet<TestResult> TestResults { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
     }
 }
