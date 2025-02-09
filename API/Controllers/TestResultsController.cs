@@ -14,7 +14,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTestResult(Guid id)
+        public async Task<IActionResult> GetTestResult(string id)
         {
             return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
         }
@@ -26,7 +26,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditTestResult(Guid id, TestResult testResult)
+        public async Task<IActionResult> EditTestResult(string id, TestResult testResult)
         {
             testResult.Id = id;
 
@@ -34,7 +34,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTestResult(Guid id)
+        public async Task<IActionResult> DeleteTestResult(string id)
         {
             return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
         }
