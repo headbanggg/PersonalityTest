@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Core;
-using Domain;
 using MediatR;
 using Persistence;
 
@@ -13,7 +8,7 @@ namespace Application.Questions
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Guid Id { get; set; }
+            public string Id { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
