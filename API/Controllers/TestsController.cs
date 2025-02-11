@@ -14,7 +14,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")] //api/guidasdsadsa
-        public async Task<IActionResult> GetTest(Guid id)
+        public async Task<IActionResult> GetTest(string id)
         {
             return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
         }
@@ -26,7 +26,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")] //api/questions/guidasdsadsa
-        public async Task<IActionResult> EditTest(Guid id, Test test)
+        public async Task<IActionResult> EditTest(string id, Test test)
         {
             test.Id = id;
 
@@ -34,7 +34,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")] //api/guidasdsadsa
-        public async Task<IActionResult> DeleteTest(Guid id)
+        public async Task<IActionResult> DeleteTest(string id)
         {
             return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
         }
