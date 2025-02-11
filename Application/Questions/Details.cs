@@ -1,29 +1,29 @@
 using Application.Core;
+using Application.Questions.DTOs;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Questions
 {
     public class Details
     {
-        public class Query : IRequest<Result<Question>>
+        public class Query : IRequest<Result<QuestionDto>>
         {
-            public Guid Id { get; set; }
+            public string Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<Question>>
+        public class Handler(DataContext context, IMapper mapper) : IRequestHandler<Query, Result<QuestionDto>>
         {
-            private readonly DataContext _context;
-            public Handler(DataContext context)
+            public async Task<Result<QuestionDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                _context = context;
-            }
-
-            public async Task<Result<Question>> Handle(Query request, CancellationToken cancellationToken)
-            {
-                var question = await _context.Questions.FindAsync(request.Id);
-                return Result<Question>.Success(question);
+                var question = await context.Questions
+                .ProjectTo<QuestionDto>(mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(x => request.Id == x.Id, cancellationToken);
+                return Result<QuestionDto>.Success(question);
             }
         }
     }
