@@ -1,4 +1,7 @@
 using Application.Core;
+using Application.Tests.DTOs;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,18 +11,13 @@ namespace Application.Tests
 {
     public class List
     {
-        public class Query : IRequest<Result<List<Test>>> { }
+        public class Query : IRequest<Result<List<TestDto>>> { }
 
-        public class Handler : IRequestHandler<Query, Result<List<Test>>>
+        public class Handler(DataContext context, IMapper mapper) : IRequestHandler<Query, Result<List<TestDto>>>
         {
-            private readonly DataContext _context;
-            public Handler(DataContext context)
+            public async Task<Result<List<TestDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                _context = context;
-            }
-            public async Task<Result<List<Test>>> Handle(Query request, CancellationToken cancellationToken)
-            {
-                return Result<List<Test>>.Success(await _context.Tests.ToListAsync(cancellationToken));
+                return Result<List<TestDto>>.Success(await context.Tests.ProjectTo<TestDto>(mapper.ConfigurationProvider).ToListAsync(cancellationToken));
             }
         }
     }
