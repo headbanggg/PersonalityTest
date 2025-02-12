@@ -1,26 +1,22 @@
 using Application.Core;
-using Domain;
+using Application.Questions.DTOs;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Persistence;
 
 namespace Application.Questions
 {
     public class List
     {
-        public class Query : IRequest<Result<List<Question>>> { }
-
-        public class Handler : IRequestHandler<Query, Result<List<Question>>>
+        public class Query : IRequest<Result<List<QuestionDto>>> { }
+        
+        public class Handler(DataContext context, IMapper mapper) : IRequestHandler<Query, Result<List<QuestionDto>>>
         {
-            private readonly DataContext _context;
-            public Handler(DataContext context)
+            public async Task<Result<List<QuestionDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                _context = context;
-            }
-            public async Task<Result<List<Question>>> Handle(Query request, CancellationToken cancellationToken)
-            {
-                return Result<List<Question>>.Success(await _context.Questions.ToListAsync(cancellationToken));
+                return Result<List<QuestionDto>>.Success(await context.Questions.ProjectTo<QuestionDto>(mapper.ConfigurationProvider).ToListAsync(cancellationToken));
             }
         }
     }
