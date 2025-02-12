@@ -30,6 +30,9 @@ namespace Application.Tests
             }
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+ 
+                var test = request.Test;
+                test.QuestionList = request.Test.QuestionList;
                 _context.Tests.Add(request.Test);
                 var result = await _context.SaveChangesAsync() > 0;
                 if (!result) return Result<Unit>.Failure("Failed to create test");
